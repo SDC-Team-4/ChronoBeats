@@ -19,12 +19,14 @@ CREATE TABLE users (
 CREATE TABLE albums (
   album_id SERIAL PRIMARY KEY,
   name VARCHAR,
+  genre VARCHAR,
   release DATE,
 );
 
 CREATE TABLE songs (
   song_id SERIAL PRIMARY KEY,
   name VARCHAR,
+  genre VARCHAR,
   length INT,
   listens INT
 );
