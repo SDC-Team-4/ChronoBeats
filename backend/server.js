@@ -3,12 +3,11 @@
 const cors = require('cors');
 const express = require('express');
 const { Pool } = require('pg');
-const config = require('./config.js');
 
 /* ==================== Initialize Pool ==================== */
 
-const pool = new Pool({ connectionString: config[process.env.MODE].connectionString });
-const port = config[process.env.MODE].port;
+const pool = new Pool({ connectionString: process.env.connectionString });
+const port = process.env.PORT;
 
 /* ==================== Initialize Express ==================== */
 
@@ -24,7 +23,7 @@ app.use(express.json());
 //example: returns all values from the requested table
 app.get('/:table', (req, res) => {
   pool
-    .query(`SELECT * FROM ${req.params.table}`)
+    .query(`SELECT * FROM ${req.params.table} LIMIT 10`)
     .then((result) => res.send(result.rows))
     .catch((err) => {
       console.error(err);

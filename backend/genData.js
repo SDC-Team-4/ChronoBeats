@@ -242,7 +242,7 @@ function randomGenre() {
   return genres[Math.floor(Math.random() * genres.length)];
 }
 
-const gencount = 100;
+const gencount = 100000;
 
 genUsers(gencount);
 genAlbums(gencount);
@@ -261,15 +261,7 @@ Step 2: move all CSVs into 'server-data' within back-end
 
 Step 3: ensure docker is running, then from backend, run :
 
-    npm run docker-start
-
-        -then
-
-    npm run docker-copy
-
-        -then
-
-    npm run docker-enter
+    npm run docker-db
 
         -You should now be within docker. 
 

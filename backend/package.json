@@ -6,11 +6,11 @@
     "pg": "^8.8.0"
   },
   "scripts": {
-    "local": "MODE=dev nodemon server.js",
-    "pro": "MODE=production node server.js",
-    "docker-start": "docker run --rm --name pg-docker -e POSTGRES_PASSWORD=docker -d -p 5432:5432 -v $HOME/docker/volumes/postgres:/var/lib/postgresql/data postgres",
-    "docker-copy": "docker cp server-data/ pg-docker:/tmp",
-    "docker-enter": "docker exec -it pg-docker bash"
+    "dev": "nodemon server.js",
+    "pro": "node server.js",
+    "docker-db": "docker run --rm --name pg-docker -e POSTGRES_PASSWORD=docker -d -p 5432:5432 -v $HOME/docker/volumes/postgres:/var/lib/postgresql/data postgres && docker cp server-data/ pg-docker:/tmp && docker exec -it pg-docker bash",
+    "docker-server": "docker build . -t backend && docker run --name backend -p 8000:8000 -d backend",
+    "docker-run": "docker logs backend"
   },
   "name": "backend",
   "version": "1.0.0",
