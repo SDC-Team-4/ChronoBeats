@@ -1,7 +1,6 @@
 /* ==================== Dependencies ==================== */
 
 const cors = require("cors");
-const { application } = require("express");
 const express = require("express");
 const { Pool } = require("pg");
 
