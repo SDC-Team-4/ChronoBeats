@@ -242,7 +242,7 @@ function randomGenre() {
   return genres[Math.floor(Math.random() * genres.length)];
 }
 
-const gencount = 100000;
+const gencount = 10000000;
 
 genUsers(gencount);
 genAlbums(gencount);
@@ -254,30 +254,6 @@ genSongs(gencount);
 /* ==================== IMPORTANT ==================== */
 
 /*
-
-Step 1: run this file to generate CSVs
-
-Step 2: move all CSVs into 'server-data' within back-end
-
-Step 3: ensure docker is running, then from backend, run :
-
-    npm run docker-db
-
-        -You should now be within docker. 
-
-Step 4: Enter postgres DB
-
-    psql -U postgres
-
-Step 5: Create DB:
-
-    CREATE DATABASE sdc;
-
-Step 6: switch to sdc database
-
-    \c sdc
-
-Step 7: run migration file from within db:
 
     \i /tmp/server-data/tables-migration.sql
 

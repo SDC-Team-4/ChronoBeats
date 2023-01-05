@@ -7,15 +7,15 @@ services:
       - 5432:5432
     environment:
       - POSTGRES_DB=sdc
-      - POSTGRES_PASSWORD=pass
-      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_USER=postgres
 
   server:
     build: ./backend
     ports:
       - 8000:8000
     environment:
-      - connectionString=postgresql://user:pass@database:5432/sdc
+      - connectionString=postgresql://postgres:docker@database:5432/sdc
       - PORT=8000
     depends_on:
       - database
