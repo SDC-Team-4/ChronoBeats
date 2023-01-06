@@ -32,6 +32,7 @@ function genUsers(num) {
   }
   console.log('finished users');
 }
+
 function genAlbums(num) {
   for (let i = 0; i < num; i++) {
     let gap = randomSize();

@@ -43,24 +43,24 @@ CREATE TABLE genres (genre_id SERIAL PRIMARY KEY, name VARCHAR);
 
 COPY users(name, signup_date)
 FROM
-  '/users-seed.csv' DELIMITER ',' CSV;
+  '/var/lib/postgresql/csvs/users-seed.csv' DELIMITER ',' CSV;
 
 COPY albums(name, genre, release)
 FROM
-  '/albums-seed.csv' DELIMITER ',' CSV;
+  '/var/lib/postgresql/csvs/albums-seed.csv' DELIMITER ',' CSV;
 
 COPY artists(name)
 FROM
-  '/artists-seed.csv' DELIMITER ',' CSV;
+  '/var/lib/postgresql/csvs/artists-seed.csv' DELIMITER ',' CSV;
 
 COPY playlists(name, song_count)
 FROM
-  '/playlists-seed.csv' DELIMITER ',' CSV;
+  '/var/lib/postgresql/csvs/playlists-seed.csv' DELIMITER ',' CSV;
 
 COPY genres(name)
 FROM
-  '/genres-seed.csv' DELIMITER ',' CSV;
+  '/var/lib/postgresql/csvs/genres-seed.csv' DELIMITER ',' CSV;
 
 COPY songs(name, genre, length, listens)
 FROM
-  '/songs-seed.csv' DELIMITER ',' CSV;
+  '/var/lib/postgresql/csvs/songs-seed.csv' DELIMITER ',' CSV;

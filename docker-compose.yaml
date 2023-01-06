@@ -10,14 +10,8 @@ services:
       - POSTGRES_PASSWORD=docker
       - POSTGRES_USER=postgres
     volumes:
-      - ./backend/server-data/albums-seed.csv/:/docker-entrypoint-initdb.d/albums-seed.csv
-      - ./backend/server-data/artists-seed.csv/:/docker-entrypoint-initdb.d/artists-seed.csv
-      - ./backend/server-data/genres-seed.csv/:/docker-entrypoint-initdb.d/genres-seed.csv
-      - ./backend/server-data/playlists-seed.csv/:/docker-entrypoint-initdb.d/playlists-seed.csv
-      - ./backend/server-data/songs-seed.csv/:/docker-entrypoint-initdb.d/songs-seed.csv
-      - ./backend/server-data/users-seed.csv/:/docker-entrypoint-initdb.d/users-seed.csv
-      - ./backend/server-data/z-tables-migration.sql:/docker-entrypoint-initdb.d/tables-migration.sql
-      - ./postgres-data:/var/lib/postgresql/data
+      - ./database/csvs:/var/lib/postgresql/csvs
+      - ./database/migration.sql:/docker-entrypoint-initdb.d/migration.sql
 
   server:
     build: ./backend
@@ -28,6 +22,3 @@ services:
       - PORT=8000
     depends_on:
       - database
-
-volumes:
-  postgres-data:
