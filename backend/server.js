@@ -1,8 +1,8 @@
 /* ==================== Dependencies ==================== */
 
-const cors = require("cors");
-const express = require("express");
-const { Pool } = require("pg");
+const cors = require('cors');
+const express = require('express');
+const { Pool } = require('pg');
 
 /* ==================== Initialize Pool ==================== */
 
@@ -21,7 +21,7 @@ app.use(express.json());
 /* ==================== Routes ==================== */
 
 //example: returns all values from the requested table
-app.get("/users/:count", (req, res) => {
+app.get('/users/:count', (req, res) => {
   pool
     .query(`SELECT * FROM users LIMIT ${req.params.count}`)
     .then((result) => res.send(result.rows))
@@ -31,7 +31,7 @@ app.get("/users/:count", (req, res) => {
     });
 });
 
-app.get("/albums/:count", (req, res) => {
+app.get('/albums/:count', (req, res) => {
   pool
     .query(`SELECT * FROM albums LIMIT ${req.params.count}`)
     .then((result) => res.send(result.rows))
@@ -41,7 +41,7 @@ app.get("/albums/:count", (req, res) => {
     });
 });
 
-app.get("/songs/:count", (req, res) => {
+app.get('/songs/:count', (req, res) => {
   pool
     .query(`SELECT * FROM songs LIMIT ${req.params.count}`)
     .then((result) => res.send(result.rows))
@@ -51,7 +51,7 @@ app.get("/songs/:count", (req, res) => {
     });
 });
 
-app.get("/artists/:count", (req, res) => {
+app.get('/artists/:count', (req, res) => {
   pool
     .query(`SELECT * FROM artists LIMIT ${req.params.count}`)
     .then((result) => res.send(result.rows))
@@ -61,7 +61,7 @@ app.get("/artists/:count", (req, res) => {
     });
 });
 
-app.get("/playlists/:count", (req, res) => {
+app.get('/playlists/:count', (req, res) => {
   pool
     .query(`SELECT * FROM playlists LIMIT ${req.params.count}`)
     .then((result) => res.send(result.rows))
@@ -71,7 +71,7 @@ app.get("/playlists/:count", (req, res) => {
     });
 });
 
-app.get("/genres/:count", (req, res) => {
+app.get('/genres/:count', (req, res) => {
   pool
     .query(`SELECT * FROM genres LIMIT ${req.params.count}`)
     .then((result) => res.send(result.rows))
@@ -82,11 +82,9 @@ app.get("/genres/:count", (req, res) => {
 });
 
 // Search routes
-app.get("/search/:table/:term", (req, res) => {
+app.get('/search/:table/:term', (req, res) => {
   pool
-    .query(
-      `SELECT * FROM ${req.params.table} WHERE name LIKE '%${req.params.term}%'`
-    )
+    .query(`SELECT * FROM ${req.params.table} WHERE name LIKE '%${req.params.term}%'`)
     .then((result) => res.send(result.rows))
     .catch((err) => {
       console.error(err);
@@ -95,7 +93,7 @@ app.get("/search/:table/:term", (req, res) => {
 });
 
 // return by id
-app.get("/users/:id", (req, res) => {
+app.get('/users/:id', (req, res) => {
   pool
     .query(`SELECT * FROM users WHERE user_id=${req.params.id}`)
     .then((result) => res.send(result.rows))
@@ -105,7 +103,7 @@ app.get("/users/:id", (req, res) => {
     });
 });
 
-app.get("/albums/:id", (req, res) => {
+app.get('/albums/:id', (req, res) => {
   pool
     .query(`SELECT * FROM albums WHERE album_id=${req.params.id}`)
     .then((result) => res.send(result.rows))
@@ -115,7 +113,7 @@ app.get("/albums/:id", (req, res) => {
     });
 });
 
-app.get("/songs/:id", (req, res) => {
+app.get('/songs/:id', (req, res) => {
   pool
     .query(`SELECT * FROM songs WHERE song_id=${req.params.id}`)
     .then((result) => res.send(result.rows))
@@ -125,7 +123,7 @@ app.get("/songs/:id", (req, res) => {
     });
 });
 
-app.get("/artists/:id", (req, res) => {
+app.get('/artists/:id', (req, res) => {
   pool
     .query(`SELECT * FROM artists WHERE artist_id=${req.params.id}`)
     .then((result) => res.send(result.rows))
@@ -135,7 +133,7 @@ app.get("/artists/:id", (req, res) => {
     });
 });
 
-app.get("/playlists/:id", (req, res) => {
+app.get('/playlists/:id', (req, res) => {
   pool
     .query(`SELECT * FROM playlists WHERE playlist_id=${req.params.id}`)
     .then((result) => res.send(result.rows))
@@ -145,7 +143,7 @@ app.get("/playlists/:id", (req, res) => {
     });
 });
 
-app.get("/genres/:id", (req, res) => {
+app.get('/genres/:id', (req, res) => {
   pool
     .query(`SELECT * FROM genres WHERE genre_id=${req.params.id}`)
     .then((result) => res.send(result.rows))
@@ -156,16 +154,15 @@ app.get("/genres/:id", (req, res) => {
 });
 
 // Create new data
-
 function genInsert(obj) {
-  let string = "";
+  let string = '';
   let keys = Object.keys(obj);
   let vals = Object.values(obj);
-  string += "(" + keys.join(",") + ") VALUES (" + vals.join(",") + ")";
+  string += '(' + keys.join(',') + ') VALUES (' + vals.join(',') + ')';
   return string;
 }
 
-app.post("/:table", (req, res) => {
+app.post('/:table', (req, res) => {
   let insert = genInsert(req.body);
   pool
     .query(`INSERT INTO ${req.params.table} ${insert} RETURNING *`)
@@ -177,13 +174,13 @@ app.post("/:table", (req, res) => {
 });
 
 // Updates data
-app.put("/:table/:id", (req, res) => {
-  let id = req.params.table.slice(0, req.params.table.length) + "_id";
+app.put('/:table/:id', (req, res) => {
+  let id = req.params.table.slice(0, req.params.table.length) + '_id';
   pool
     .query(
-      `UPDATE ${req.params.table} SET ${Object.keys(req.body)[0]}=${
-        Object.values(req.body)[0]
-      } WHERE ${id}=${req.params.id} RETURNING *`
+      `UPDATE ${req.params.table} SET ${Object.keys(req.body)[0]}=${Object.values(req.body)[0]} WHERE ${id}=${
+        req.params.id
+      } RETURNING *`
     )
     .then((result) => res.send(result.rows))
     .catch((err) => {
@@ -193,12 +190,10 @@ app.put("/:table/:id", (req, res) => {
 });
 
 // Deletes data
-app.delete("/:table/:id", (req, res) => {
-  let id = req.params.table.slice(0, req.params.table.length) + "_id";
+app.delete('/:table/:id', (req, res) => {
+  let id = req.params.table.slice(0, req.params.table.length) + '_id';
   pool
-    .query(
-      `DELETE FROM ${req.params.table} WHERE ${id}=${req.params.id} RETURNING *`
-    )
+    .query(`DELETE FROM ${req.params.table} WHERE ${id}=${req.params.id} RETURNING *`)
     .then((result) => res.send(result.rows))
     .catch((err) => {
       console.error(err);
