@@ -20,7 +20,8 @@ app.use(express.json());
 
 /* ==================== Routes ==================== */
 
-//example: returns all values from the requested table
+// Returns 'count' values from each specified table
+
 app.get('/users/:count', (req, res) => {
   pool
     .query(`SELECT * FROM users LIMIT ${req.params.count}`)
@@ -81,10 +82,11 @@ app.get('/genres/:count', (req, res) => {
     });
 });
 
-// Search routes
+// Search routes: returns from specified table where any name matches search term
+
 app.get('/search/:table/:term', (req, res) => {
   pool
-    .query(`SELECT * FROM ${req.params.table} WHERE name LIKE '%${req.params.term}%'`)
+    .query(`SELECT * FROM ${req.params.table} WHERE name LIKE '${req.params.term}%'`)
     .then((result) => res.send(result.rows))
     .catch((err) => {
       console.error(err);
@@ -92,7 +94,8 @@ app.get('/search/:table/:term', (req, res) => {
     });
 });
 
-// return by id
+// Return from specified table the entry with specified id.
+
 app.get('/users/:id', (req, res) => {
   pool
     .query(`SELECT * FROM users WHERE user_id=${req.params.id}`)
