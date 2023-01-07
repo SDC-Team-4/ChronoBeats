@@ -94,11 +94,12 @@ app.get('/search/:table/:term', (req, res) => {
     });
 });
 
-// Return from specified table the entry with specified id.
+// Return from specified table the entry with specified id
 
-app.get('/users/:id', (req, res) => {
+app.get('/id/:table/:id', (req, res) => {
+  let id = req.params.table.slice(0, req.params.table.length - 1) + '_id';
   pool
-    .query(`SELECT * FROM users WHERE user_id=${req.params.id}`)
+    .query(`SELECT * FROM ${req.params.table} WHERE ${id}=${req.params.id}`)
     .then((result) => res.send(result.rows))
     .catch((err) => {
       console.error(err);
@@ -106,58 +107,10 @@ app.get('/users/:id', (req, res) => {
     });
 });
 
-app.get('/albums/:id', (req, res) => {
-  pool
-    .query(`SELECT * FROM albums WHERE album_id=${req.params.id}`)
-    .then((result) => res.send(result.rows))
-    .catch((err) => {
-      console.error(err);
-      res.status(404).send(err);
-    });
-});
+// Create new data for specified table
 
-app.get('/songs/:id', (req, res) => {
-  pool
-    .query(`SELECT * FROM songs WHERE song_id=${req.params.id}`)
-    .then((result) => res.send(result.rows))
-    .catch((err) => {
-      console.error(err);
-      res.status(404).send(err);
-    });
-});
-
-app.get('/artists/:id', (req, res) => {
-  pool
-    .query(`SELECT * FROM artists WHERE artist_id=${req.params.id}`)
-    .then((result) => res.send(result.rows))
-    .catch((err) => {
-      console.error(err);
-      res.status(404).send(err);
-    });
-});
-
-app.get('/playlists/:id', (req, res) => {
-  pool
-    .query(`SELECT * FROM playlists WHERE playlist_id=${req.params.id}`)
-    .then((result) => res.send(result.rows))
-    .catch((err) => {
-      console.error(err);
-      res.status(404).send(err);
-    });
-});
-
-app.get('/genres/:id', (req, res) => {
-  pool
-    .query(`SELECT * FROM genres WHERE genre_id=${req.params.id}`)
-    .then((result) => res.send(result.rows))
-    .catch((err) => {
-      console.error(err);
-      res.status(404).send(err);
-    });
-});
-
-// Create new data
 function genInsert(obj) {
+  // This function constructs the central portion of the query based on send body parameters
   let string = '';
   let keys = Object.keys(obj);
   let vals = Object.values(obj);
@@ -176,9 +129,9 @@ app.post('/:table', (req, res) => {
     });
 });
 
-// Updates data
+// Update data by id, only one param allowed
 app.put('/:table/:id', (req, res) => {
-  let id = req.params.table.slice(0, req.params.table.length) + '_id';
+  let id = req.params.table.slice(0, req.params.table.length - 1) + '_id';
   pool
     .query(
       `UPDATE ${req.params.table} SET ${Object.keys(req.body)[0]}=${Object.values(req.body)[0]} WHERE ${id}=${
@@ -192,9 +145,9 @@ app.put('/:table/:id', (req, res) => {
     });
 });
 
-// Deletes data
+// Delete data by id
 app.delete('/:table/:id', (req, res) => {
-  let id = req.params.table.slice(0, req.params.table.length) + '_id';
+  let id = req.params.table.slice(0, req.params.table.length - 1) + '_id';
   pool
     .query(`DELETE FROM ${req.params.table} WHERE ${id}=${req.params.id} RETURNING *`)
     .then((result) => res.send(result.rows))
