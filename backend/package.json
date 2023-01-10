@@ -2,13 +2,12 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.18.2",
-    "fs": "^0.0.1-security",
     "pg": "^8.8.0"
   },
   "scripts": {
     "dev": "nodemon server.js",
     "pro": "node server.js",
-    "docker-db": "docker run --rm --name pg-docker -e POSTGRES_PASSWORD=docker -d -p 5432:5432 -v $HOME/docker/volumes/postgres:/var/lib/postgresql/data postgres && docker cp server-data/ pg-docker:/tmp && docker exec -it pg-docker bash",
+    "docker-db": "docker run --rm --name pg-docker -e POSTGRES_PASSWORD=docker -d -p 5432:5432 -v $HOME/docker/volumes/postgres:/var/lib/postgresql/data postgres",
     "docker-server": "docker build . -t backend && docker run --name backend -p 8000:8000 -d backend",
     "docker-run": "docker logs backend"
   },

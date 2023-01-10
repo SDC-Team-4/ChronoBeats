@@ -245,12 +245,12 @@ function randomGenre() {
 
 const gencount = 10000000;
 
-genUsers(gencount);
-genAlbums(gencount);
-genArtists(gencount);
-genGenres(gencount);
-genPlaylists(gencount);
-genSongs(gencount);
+// genUsers(gencount);
+// genAlbums(gencount);
+// genArtists(gencount);
+// genGenres(gencount);
+// genPlaylists(gencount);
+// genSongs(gencount);
 
 /* ==================== IMPORTANT ==================== */
 
