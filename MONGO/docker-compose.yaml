@@ -8,11 +8,13 @@ services:
     ports:
       - '27017:27017'
 
-  mongo-seed:
-    build: ./mongo-seed
-    container_name: 'mongoseed'
-    depends_on:
-      - mongo
+  # Only use below on first build, it takes awhile
+
+  # mongo-seed:
+  #   build: ./mongo-seed
+  #   container_name: 'mongoseed'
+  #   depends_on:
+  #     - mongo
 
   backend:
     container_name: 'backend'

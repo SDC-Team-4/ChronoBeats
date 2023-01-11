@@ -3,32 +3,37 @@ const mongoose = require('mongoose');
 /*
 ========== Collection Design ==========
 
-users:
-  id, name, signup
 
-albums:
-  name, genre, release
+  Users:
+   'userID,name,userName,signup,propic\n';
 
-songs:
-  name, genre, length, listens
+  Gernes:
+   'genreID,name\n';
 
-artists:
-  name
+  Artists:
+   'artistID,name,portrait\n';
 
-playlists:
-  name, count
+  Albums:
+   'albumID,name,release,art,genre,artist\n';
 
-genres:
-  name
+  Songs:
+   'songID,name,length,listens,album,artist,genre\n';
+  
+  Playlists:
+   'playlistID,userID,songs,image\n';
 
 */
 
 const UserSchema = new mongoose.Schema({
-  id: {
+  userID: {
     type: Number,
     required: true,
   },
   name: {
+    type: String,
+    required: true,
+  },
+  userName: {
     type: String,
     required: true,
   },
@@ -36,12 +41,16 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  propic: {
+    type: String,
+    required: false,
+  },
 });
 
 const User = mongoose.model('User', UserSchema);
 
 const AlbumSchema = new mongoose.Schema({
-  id: {
+  albumID: {
     type: Number,
     required: true,
   },
@@ -49,11 +58,19 @@ const AlbumSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  release: {
+    type: Date,
+    required: true,
+  },
+  art: {
+    type: String,
+    required: false,
+  },
   genre: {
     type: String,
     required: true,
   },
-  release: {
+  artist: {
     type: Date,
     required: true,
   },
@@ -62,15 +79,11 @@ const AlbumSchema = new mongoose.Schema({
 const Album = mongoose.model('Album', AlbumSchema);
 
 const SongSchema = new mongoose.Schema({
-  id: {
+  songID: {
     type: Number,
     required: true,
   },
   name: {
-    type: String,
-    required: true,
-  },
-  genre: {
     type: String,
     required: true,
   },
@@ -82,34 +95,54 @@ const SongSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  album: {
+    type: String,
+    required: true,
+  },
+  artist: {
+    type: String,
+    required: true,
+  },
+  genre: {
+    type: String,
+    required: true,
+  },
 });
 
 const Song = mongoose.model('Song', SongSchema);
 
 const ArtistSchema = new mongoose.Schema({
-  id: {
+  artistID: {
     type: Number,
     required: true,
   },
   name: {
     type: String,
     required: true,
+  },
+  portrait: {
+    type: String,
+    required: false,
   },
 });
 
 const Artist = mongoose.model('Artist', ArtistSchema);
 
 const PlaylistSchema = new mongoose.Schema({
-  id: {
+  playlistID: {
     type: Number,
     required: true,
   },
-  name: {
+  userID: {
+    type: Number,
+    required: true,
+  },
+  songs: {
     type: String,
     required: true,
   },
-  count: {
-    type: Number,
+  image: {
+    type: String,
     required: true,
   },
 });
@@ -117,7 +150,7 @@ const PlaylistSchema = new mongoose.Schema({
 const Playlist = mongoose.model('Playlist', PlaylistSchema);
 
 const GenreSchema = new mongoose.Schema({
-  id: {
+  genreID: {
     type: Number,
     required: true,
   },

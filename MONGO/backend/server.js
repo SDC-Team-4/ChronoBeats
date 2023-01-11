@@ -26,6 +26,16 @@ app.use(express.urlencoded({ extended: true }));
 
 // ==================== Routes  ====================
 
+// Goals:
+
+// Search all tables
+
+// Get X lines from all tables
+
+// put post delete all tables (mongo makes this easier)
+
+// Get all from a table (woof)
+
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to ChronoBeats' });
 });
@@ -40,8 +50,7 @@ app.get('/users/:count', (req, res) => {
 });
 
 app.get('/users/search/:term', (req, res) => {
-  User.find({ $text: { $search: req.params.term } }, { score: { $meta: 'textScore' } })
-    .sort({ score: { $meta: 'textScore' } })
+  User.find({ name: new RegExp(req.params.term, 'i') })
     .then((result) => {
       res.send(result);
     })
