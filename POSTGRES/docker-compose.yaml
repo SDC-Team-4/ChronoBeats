@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  postgres:
+    container_name: 'postgres'
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=music
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_USER=postgres
+    volumes:
+      - ./database/csvs:/var/lib/postgresql/csvs
+      - ./database/migration.sql:/docker-entrypoint-initdb.d/migration.sql
+
+  pgserver:
+    container_name: 'pgserver'
+    build: ./backend
+    ports:
+      - 8000:8000
+    environment:
+      - connectionString=postgresql://postgres:docker@database:5432/music
+      - PORT=8000
+    depends_on:
+      - postgres
+
+  frontend:
+    build: ./frontend
+    ports:
+      - 9000:9000
+    environment:
+      - PORT=9000
+    depends_on:
+      - backend
