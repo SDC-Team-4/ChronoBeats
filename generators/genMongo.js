@@ -343,7 +343,7 @@ function genPlaylists(num) {
 
 /* ==================== Call Generators ==================== */
 
-let multiplyer = 1000;
+let multiplyer = 1;
 
 genUsers(multiplyer);
 genGenres(multiplyer);

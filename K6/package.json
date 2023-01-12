@@ -4,6 +4,7 @@
   "description": "",
   "main": "test.js",
   "scripts": {
+    "spike": "docker run --rm -i grafana/k6 run - <spike.js",
     "test": "docker run --rm -i grafana/k6 run - <test.js"
   },
   "keywords": [],

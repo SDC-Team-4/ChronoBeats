@@ -117,9 +117,9 @@ function randomNumber(min, max) {
 //   propic varchar
 // );
 
-function genUsers() {
+function genUsers(num) {
   console.log('starting users');
-  for (let i = 1; i <= 10000000; i++) {
+  for (let i = 1; i <= 10000 * num; i++) {
     // Use faker to make a fake name
     let firstName = faker.name.firstName();
     let name = firstName + ' ' + faker.name.lastName();
@@ -171,9 +171,9 @@ function genGenres() {
 //   portrait varchar,
 //   );
 let artistList = [];
-function genArtists() {
+function genArtists(num) {
   console.log('starting artists');
-  for (let i = 1; i <= 1000000; i++) {
+  for (let i = 1; i <= 1000 * num; i++) {
     // Use faker to make a fake name
     let name = faker.name.fullName();
     // Use faker to make a random image link
@@ -202,9 +202,9 @@ function genArtists() {
 // );
 
 let albumList = [];
-function genAlbums() {
+function genAlbums(num) {
   console.log('starting albums');
-  for (let i = 1; i <= 1000000; i++) {
+  for (let i = 1; i <= 1000 * num; i++) {
     let name = faker.music.songName();
     let release = faker.date
       .past(10)
@@ -221,7 +221,7 @@ function genAlbums() {
       console.log(`passing ${i / 1000000} million albums`);
     }
   }
-  for (let i = 1; i <= 4000000; i++) {
+  for (let i = 1; i <= 4000 * num; i++) {
     let name = faker.music.songName();
     let release = faker.date
       .past(10)
@@ -253,9 +253,9 @@ function genAlbums() {
 //   genre VARCHAR
 // );
 
-function genSongs() {
+function genSongs(num) {
   console.log('starting songs');
-  for (let i = 1; i <= 5000000; i++) {
+  for (let i = 1; i <= 5000 * num; i++) {
     // Use faker to make a fake name
     let name = faker.music.songName();
     // Use faker to make a fake date from the last 10 years, convert to string, and remove extraneous text
@@ -275,7 +275,7 @@ function genSongs() {
       console.log(`reached ${i / 1000000} million songs`);
     }
   }
-  for (let i = 1; i <= 100000000 - 5000000; i++) {
+  for (let i = 1; i <= 100000 * num - 5000 * num; i++) {
     // Use faker to make a fake name
     let name = faker.music.songName();
     // Use faker to make a fake date from the last 10 years, convert to string, and remove extraneous text
@@ -308,12 +308,12 @@ function genSongs() {
 //   image VARCHAR
 // );
 
-function genPlaylists() {
+function genPlaylists(num) {
   console.log('starting playlists');
-  for (let i = 1; i < 10000000; i++) {
+  for (let i = 1; i < 10000 * num; i++) {
     let songList = [];
     for (let i = 0; i < Math.floor(Math.random() * 30 + 10); i++) {
-      songList.push(Math.floor(Math.random() * 100000000));
+      songList.push(Math.floor(Math.random() * 100000 * num));
     }
     let image = faker.image.imageUrl(800, 800, undefined, true);
     let output = `${i},${songList.join('.')},${image}\n`;
@@ -327,9 +327,11 @@ function genPlaylists() {
 
 /* ==================== Call Generators ==================== */
 
-// genUsers();
-// genGenres();
-// genArtists();
-// genAlbums();
-// genSongs();
-// genPlaylists();
+let multi = 1;
+
+genUsers(multi);
+genGenres(multi);
+genArtists(multi);
+genAlbums(multi);
+genSongs(multi);
+genPlaylists(multi);

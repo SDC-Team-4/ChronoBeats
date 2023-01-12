@@ -1,17 +1,26 @@
-import http from 'k6/http';
 import { sleep } from 'k6';
+import http from 'k6/http';
 
 export const options = {
-  vus: 10000,
-  stages: [
-    { duration: '30s', target: 20 },
-    { duration: '1m30s', target: 10 },
-    { duration: '20s', target: 0 },
-  ],
+  scenarios: {
+    Spike: {
+      executor: 'ramping-vus',
+      gracefulStop: '5s',
+      stages: [
+        { target: 5, duration: '5s' },
+        { target: 10, duration: '5s' },
+        { target: 5, duration: '5s' },
+        { target: 0, duration: '5s' },
+      ],
+      gracefulRampDown: '5s',
+      exec: 'spike',
+    },
+  },
 };
 
-export default function () {
-  const res = http.get('https://httpbin.test.k6.io/');
-  check(res, { 'status was 200': (r) => r.status == 200 });
+export function spike() {
+  let response;
+
+  response = http.get(`http://pgbackend:8000/users/name/Judy/20`);
   sleep(1);
 }
