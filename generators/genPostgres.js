@@ -310,13 +310,13 @@ function genSongs() {
 
 function genPlaylists() {
   console.log('starting playlists');
-  for (let i = 0; i < 10000000; i++) {
+  for (let i = 1; i < 10000000; i++) {
     let songList = [];
-    for (let i = 0; i < Math.floor(Math.random() * 50); i++) {
+    for (let i = 0; i < Math.floor(Math.random() * 30 + 10); i++) {
       songList.push(Math.floor(Math.random() * 100000000));
     }
     let image = faker.image.imageUrl(800, 800, undefined, true);
-    let output = `${i},${i},${songList.join('.')},${image}\n`;
+    let output = `${i},${songList.join('.')},${image}\n`;
     fs.writeFileSync('playlists-psql.csv', output, { flag: 'a+' });
     if (i % 100000 === 0) {
       console.log(`reached ${i / 1000000} million playlists`);
@@ -327,9 +327,9 @@ function genPlaylists() {
 
 /* ==================== Call Generators ==================== */
 
-genUsers();
-genGenres();
-genArtists();
-genAlbums();
-genSongs();
-genPlaylists();
+// genUsers();
+// genGenres();
+// genArtists();
+// genAlbums();
+// genSongs();
+// genPlaylists();

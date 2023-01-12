@@ -14,22 +14,23 @@ services:
       - ./database/csvs:/var/lib/postgresql/csvs
       - ./database/migration.sql:/docker-entrypoint-initdb.d/migration.sql
 
-  pgserver:
-    container_name: 'pgserver'
+  pgbackend:
+    container_name: 'pgbackend'
     build: ./backend
     ports:
       - 8000:8000
     environment:
-      - connectionString=postgresql://postgres:docker@database:5432/music
+      - connectionString=postgresql://postgres:docker@postgres:5432/music
       - PORT=8000
     depends_on:
       - postgres
 
-  frontend:
+  pgfrontend:
+    container_name: 'pgfrontend'
     build: ./frontend
     ports:
       - 9000:9000
     environment:
       - PORT=9000
     depends_on:
-      - backend
+      - pgbackend

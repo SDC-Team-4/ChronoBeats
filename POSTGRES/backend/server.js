@@ -8,6 +8,7 @@ const { Pool } = require('pg');
 
 const pool = new Pool({ connectionString: process.env.connectionString });
 const port = process.env.PORT;
+pool.connect();
 
 /* ==================== Initialize Express ==================== */
 

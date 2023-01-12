@@ -10,8 +10,6 @@ DROP TABLE IF EXISTS playlists CASCADE;
 
 DROP TABLE IF EXISTS genres CASCADE;
 
-playlists let output = `${i},${i},${songList.join('.')},${image}\n`;
-
 CREATE TABLE users (
   user_id SERIAL PRIMARY KEY,
   name VARCHAR,
