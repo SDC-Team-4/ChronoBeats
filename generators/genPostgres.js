@@ -108,7 +108,7 @@ function randomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-/* ==================== Generate 10 Million Users ==================== */
+/* ==================== Generate 10 Thousand*X Users ==================== */
 
 // users ( user_id SERIAL PRIMARY KEY,
 //   name VARCHAR,
@@ -137,14 +137,14 @@ function genUsers(num) {
     // Write the string to the file
     fs.writeFileSync('users-psql.csv', output, { flag: 'a+' });
     // Some console logs to see how far along the function is
-    if (i % 100000 === 0) {
-      console.log(`reached ${i / 1000000} million users`);
+    if (i % 1000 === 0) {
+      console.log(`made ${i / 1000} thousand users`);
     }
   }
   console.log('finished users');
 }
 
-/* ==================== Generate All Genres ==================== */
+/* ==================== Generate 85 Genres ==================== */
 
 // genres ( genre_id SERIAL PRIMARY KEY,
 //   name VARCHAR
@@ -164,7 +164,7 @@ function genGenres() {
   console.log('finished genres');
 }
 
-/* ==================== Generate 1 Million artists ==================== */
+/* ==================== Generate 1 Thousand*X artists ==================== */
 
 // artists ( artist_id SERIAL PRIMARY KEY,
 //   name VARCHAR,
@@ -184,14 +184,14 @@ function genArtists(num) {
     artistList.push(name);
     fs.writeFileSync('artists-psql.csv', output, { flag: 'a+' });
     // Some console logs to see how far along the function is
-    if (i % 100000 === 0) {
-      console.log(`reached ${i / 1000000} million artists`);
+    if (i % 1000 === 0) {
+      console.log(`made ${i / 1000} thousand artists`);
     }
   }
   console.log('finished artists');
 }
 
-/* ==================== Generate 5 Million Albums ==================== */
+/* ==================== Generate 5 Thousand*X Albums ==================== */
 
 // albums ( album_id SERIAL PRIMARY KEY,
 //   name VARCHAR,
@@ -216,9 +216,8 @@ function genAlbums(num) {
     let output = `${name},${release},${art},${genre},${artist}\n`;
     albumList.push([name, artist, genre]);
     fs.writeFileSync('albums-psql.csv', output, { flag: 'a+' });
-    if (i === 0) {
-    } else if (i % 100000 === 0) {
-      console.log(`passing ${i / 1000000} million albums`);
+    if (i % 1000 === 0) {
+      console.log(`made ${i / 1000} thousand albums`);
     }
   }
   for (let i = 1; i <= 4000 * num; i++) {
@@ -233,16 +232,14 @@ function genAlbums(num) {
     let output = `${name},${release},${art},${genre},${artist}\n`;
     albumList.push([name, artist, genre]);
     fs.writeFileSync('albums-psql.csv', output, { flag: 'a+' });
-    if (i === 0) {
-      console.log('starting albums');
-    } else if (i % 100000 === 0) {
-      console.log(`passing ${i / 1000000 + 1} million albums`);
+    if (i % 1000 === 0) {
+      console.log(`made ${(i + 1000 * num) / 1000} thousand albums`);
     }
   }
   console.log('finished albums');
 }
 
-/* ==================== Generate 100 Million Songs ==================== */
+/* ==================== Generate 100 Thousand*X Songs ==================== */
 
 // songs ( song_id SERIAL PRIMARY KEY,
 //   name VARCHAR,
@@ -261,7 +258,7 @@ function genSongs(num) {
     // Use faker to make a fake date from the last 10 years, convert to string, and remove extraneous text
     let length = faker.datatype.number({ min: 60, max: 360 });
     // Use faker to make a random image link
-    let listens = faker.datatype.number({ min: 2, max: 1000000000 });
+    let listens = faker.datatype.number({ min: 2, max: 1000000 });
     // Give data to songs, based on albumList
     let artist = albumList[i - 1][1];
     let album = albumList[i - 1][0];
@@ -271,17 +268,17 @@ function genSongs(num) {
     // Write the string to the file
     fs.writeFileSync('songs-psql.csv', output, { flag: 'a+' });
     // Some console logs to see how far along the function is
-    if (i % 100000 === 0) {
-      console.log(`reached ${i / 1000000} million songs`);
+    if (i % 1000 === 0) {
+      console.log(`made ${i / 1000} thousand songs`);
     }
   }
-  for (let i = 1; i <= 100000 * num - 5000 * num; i++) {
+  for (let i = 1; i <= (100000 - 5000) * num; i++) {
     // Use faker to make a fake name
     let name = faker.music.songName();
     // Use faker to make a fake date from the last 10 years, convert to string, and remove extraneous text
     let length = faker.datatype.number({ min: 60, max: 360 });
     // Use faker to make a random image link
-    let listens = faker.datatype.number({ min: 2, max: 1000000000 });
+    let listens = faker.datatype.number({ min: 2, max: 1000000 });
     // Give data to songs, based on albumList
     let albumID = Math.floor(Math.random() * albumList.length);
     let artist = albumList[albumID][1];
@@ -292,14 +289,14 @@ function genSongs(num) {
     // Write the string to the file
     fs.writeFileSync('songs-psql.csv', output, { flag: 'a+' });
     // Some console logs to see how far along the function is
-    if (i % 100000 === 0) {
-      console.log(`reached ${i / 1000000 + 5} million songs`);
+    if (i % 1000 === 0) {
+      console.log(`made ${(i + 5000 * num) / 1000} thousand songs`);
     }
   }
   console.log('finished songs');
 }
 
-/* ==================== Generate 10 Million Playlists ==================== */
+/* ==================== Generate 10 Thousand*X Playlists ==================== */
 
 // playlists (
 //   playlist SERIAL PRIMARY KEY,
@@ -310,7 +307,7 @@ function genSongs(num) {
 
 function genPlaylists(num) {
   console.log('starting playlists');
-  for (let i = 1; i < 10000 * num; i++) {
+  for (let i = 1; i <= 10000 * num; i++) {
     let songList = [];
     for (let i = 0; i < Math.floor(Math.random() * 30 + 10); i++) {
       songList.push(Math.floor(Math.random() * 100000 * num));
@@ -318,8 +315,8 @@ function genPlaylists(num) {
     let image = faker.image.imageUrl(800, 800, undefined, true);
     let output = `${i},${songList.join('.')},${image}\n`;
     fs.writeFileSync('playlists-psql.csv', output, { flag: 'a+' });
-    if (i % 100000 === 0) {
-      console.log(`reached ${i / 1000000} million playlists`);
+    if (i % 1000 === 0) {
+      console.log(`made ${i / 1000} thousand playlists`);
     }
   }
   console.log('finished playlists');
@@ -327,6 +324,7 @@ function genPlaylists(num) {
 
 /* ==================== Call Generators ==================== */
 
+// multi can go up to 1000, for 100 Million songs
 let multi = 1;
 
 genUsers(multi);

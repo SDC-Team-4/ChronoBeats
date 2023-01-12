@@ -25,12 +25,14 @@ services:
     depends_on:
       - postgres
 
-  pgfrontend:
-    container_name: 'pgfrontend'
-    build: ./frontend
-    ports:
-      - 9000:9000
-    environment:
-      - PORT=9000
-    depends_on:
-      - pgbackend
+  # Front end not used for testing
+
+  # pgfrontend:
+  #   container_name: 'pgfrontend'
+  #   build: ./frontend
+  #   ports:
+  #     - 9000:9000
+  #   environment:
+  #     - PORT=9000
+  #   depends_on:
+  #     - pgbackend

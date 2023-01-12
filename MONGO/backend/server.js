@@ -43,6 +43,12 @@ app.use(express.urlencoded({ extended: true }));
 
 // ===== Search Tables in various ways
 
+// Testing =====
+
+app.get('/', (req, res) => {
+  res.send('Welcome to Mongo Backend');
+});
+
 // Users =====
 
 app.get('/users/name/:term/:count', (req, res) => {

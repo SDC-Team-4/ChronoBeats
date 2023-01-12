@@ -13,22 +13,21 @@ export const options = {
   },
   thresholds: {},
   scenarios: {
-    Spike: {
+    End: {
       executor: 'ramping-vus',
       gracefulStop: '2s',
       stages: [
         { target: 5, duration: '2s' },
-        { target: 10000, duration: '10s' },
+        { target: 1000, duration: '30s' },
         { target: 5, duration: '2s' },
-        { target: 0, duration: '2s' },
       ],
       gracefulRampDown: '2s',
-      exec: 'spike',
+      exec: 'end',
     },
   },
 };
 
-export function spike() {
+export function end() {
   http.get('http://host.docker.internal:8000/');
   sleep(1);
   http.get('http://host.docker.internal:8000/songs/name/christmas/5');

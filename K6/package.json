@@ -5,7 +5,8 @@
   "main": "test.js",
   "scripts": {
     "spike": "docker run --rm -i grafana/k6 run - <spike.js",
-    "test": "docker run --rm -i grafana/k6 run - <test.js"
+    "test": "docker run --rm -i grafana/k6 run - <test.js",
+    "end": "docker run --rm -i grafana/k6 run - <endurance.js"
   },
   "keywords": [],
   "author": "",

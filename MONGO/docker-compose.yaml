@@ -1,20 +1,17 @@
 version: '3.8'
 
 services:
-  # MongoDB
   mongo:
     container_name: 'mongo'
     image: mongo
     ports:
       - '27017:27017'
 
-  # Only use below on first build, it takes awhile
-
-  # mongo-seed:
-  #   build: ./mongo-seed
-  #   container_name: 'mongoseed'
-  #   depends_on:
-  #     - mongo
+  mongo-seed:
+    build: ./mongo-seed
+    container_name: 'mongoseed'
+    depends_on:
+      - mongo
 
   mongobackend:
     container_name: 'mongobackend'
@@ -27,12 +24,12 @@ services:
     depends_on:
       - mongo
 
-  mongofrontend:
-    build: ./frontend
-    container_name: 'mongofrontend'
-    ports:
-      - 9000:9000
-    environment:
-      - PORT=9000
-    depends_on:
-      - mongobackend
+  # mongofrontend:
+  #   build: ./frontend
+  #   container_name: 'mongofrontend'
+  #   ports:
+  #     - 9000:9000
+  #   environment:
+  #     - PORT=9000
+  #   depends_on:
+  #     - mongobackend
