@@ -198,9 +198,9 @@ app.get('/songs/id/:id', (req, res) => {
 
 // Genre =====
 
-app.get('/genres/name/:term/', (req, res) => {
+app.get('/genres/name/:term/:count', (req, res) => {
   pool
-    .query(`SELECT * FROM genres WHERE name LIKE '%${req.params.term}%'`)
+    .query(`SELECT * FROM genres WHERE name LIKE '%${req.params.term}%' LIMIT  ${req.params.count}`)
     .then((result) => {
       res.send(result.rows);
     })
