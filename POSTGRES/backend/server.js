@@ -19,143 +19,215 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-/* ==================== Routes ==================== */
+// ==================== Routes  ====================
 
-// Returns 'count' values from each specified table
+/* ===== Collection Design =====
+  Users:
+   userID, name, userName, signup, propic
+  Gernes:
+   genreID, name
+  Artists:
+   artistID, name, portrait
+  Albums:
+   albumID, name, release, art, genre, artist
+  Songs:
+   songID, name, length, listens, album, artist, genre
+  Playlists:
+   playlistID, userID, songs, image
+*/
 
-app.get('/users/:count', (req, res) => {
+// ===== Search Tables in various ways
+
+// Users =====
+
+app.get('/users/name/:term/:count', (req, res) => {
   pool
-    .query(`SELECT * FROM users LIMIT ${req.params.count}`)
-    .then((result) => res.send(result.rows))
-    .catch((err) => {
-      console.error(err);
-      res.status(404).send(err);
-    });
+    .query(`SELECT * FROM users WHERE name LIKE '%${req.params.term}%' LIMIT ${req.params.count}`)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => res.status(404).send(err));
 });
 
-app.get('/albums/:count', (req, res) => {
+app.get('/users/newest/:count', (req, res) => {
   pool
-    .query(`SELECT * FROM albums LIMIT ${req.params.count}`)
-    .then((result) => res.send(result.rows))
-    .catch((err) => {
-      console.error(err);
-      res.status(404).send(err);
-    });
+    .query(`SELECT * FROM users ORDER BY signup DESC LIMIT ${req.params.count}`)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => res.status(404).send(err));
 });
 
-app.get('/songs/:count', (req, res) => {
+app.get('/users/id/:id', (req, res) => {
   pool
-    .query(`SELECT * FROM songs LIMIT ${req.params.count}`)
-    .then((result) => res.send(result.rows))
-    .catch((err) => {
-      console.error(err);
-      res.status(404).send(err);
-    });
+    .query(`SELECT * FROM users WHERE id=${req.params.id}`)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => res.status(404).send(err));
 });
 
-app.get('/artists/:count', (req, res) => {
+// Artist =====
+
+app.get('/artists/name/:term/:count', (req, res) => {
   pool
-    .query(`SELECT * FROM artists LIMIT ${req.params.count}`)
-    .then((result) => res.send(result.rows))
-    .catch((err) => {
-      console.error(err);
-      res.status(404).send(err);
-    });
+    .query(`SELECT * FROM artists WHERE name LIKE '%${req.params.term}%' LIMIT ${req.params.count}`)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => res.status(404).send(err));
 });
 
-app.get('/playlists/:count', (req, res) => {
+app.get('/artist/id/:id', (req, res) => {
   pool
-    .query(`SELECT * FROM playlists LIMIT ${req.params.count}`)
-    .then((result) => res.send(result.rows))
-    .catch((err) => {
-      console.error(err);
-      res.status(404).send(err);
-    });
+    .query(`SELECT * FROM users WHERE id=${req.params.id}`)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => res.status(404).send(err));
 });
 
-app.get('/genres/:count', (req, res) => {
+// Album =====
+
+app.get('/albums/name/:term/:count', (req, res) => {
   pool
-    .query(`SELECT * FROM genres LIMIT ${req.params.count}`)
-    .then((result) => res.send(result.rows))
-    .catch((err) => {
-      console.error(err);
-      res.status(404).send(err);
-    });
+    .query(`SELECT * FROM albums WHERE name LIKE '%${req.params.term}%' LIMIT ${req.params.count}`)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => res.status(404).send(err));
 });
 
-// Search routes: returns from specified table where any name matches search term
-
-app.get('/search/:table/:term', (req, res) => {
+app.get('/ablums/newest/:count', (req, res) => {
   pool
-    .query(`SELECT * FROM ${req.params.table} WHERE name LIKE '${req.params.term}%'`)
-    .then((result) => res.send(result.rows))
-    .catch((err) => {
-      console.error(err);
-      res.status(404).send(err);
-    });
+    .query(`SELECT * FROM albums ORDER BY release DESC LIMIT ${req.params.count}`)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => res.status(404).send(err));
 });
 
-// Return from specified table the entry with specified id
-
-app.get('/id/:table/:id', (req, res) => {
-  let id = req.params.table.slice(0, req.params.table.length - 1) + '_id';
+app.get('/albums/genre/:genre/', (req, res) => {
   pool
-    .query(`SELECT * FROM ${req.params.table} WHERE ${id}=${req.params.id}`)
-    .then((result) => res.send(result.rows))
-    .catch((err) => {
-      console.error(err);
-      res.status(404).send(err);
-    });
+    .query(`SELECT * FROM albums WHERE genre='${req.params.genre}'`)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => res.status(404).send(err));
 });
 
-// Create new data for specified table
-
-function genInsert(obj) {
-  // This function constructs the central portion of the query based on send body parameters
-  let string = '';
-  let keys = Object.keys(obj);
-  let vals = Object.values(obj);
-  string += '(' + keys.join(',') + ') VALUES (' + vals.join(',') + ')';
-  return string;
-}
-
-app.post('/:table', (req, res) => {
-  let insert = genInsert(req.body);
+app.get('/albums/artist/:artist/', (req, res) => {
   pool
-    .query(`INSERT INTO ${req.params.table} ${insert} RETURNING *`)
-    .then((result) => res.send(result.rows))
-    .catch((err) => {
-      console.error(err);
-      res.status(404).send(err);
-    });
+    .query(`SELECT * FROM albums WHERE artist='${req.params.artist}'`)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => res.status(404).send(err));
 });
 
-// Update data by id, only one param allowed
-app.put('/:table/:id', (req, res) => {
-  let id = req.params.table.slice(0, req.params.table.length - 1) + '_id';
+app.get('/albums/id/:id', (req, res) => {
   pool
-    .query(
-      `UPDATE ${req.params.table} SET ${Object.keys(req.body)[0]}=${Object.values(req.body)[0]} WHERE ${id}=${
-        req.params.id
-      } RETURNING *`
-    )
-    .then((result) => res.send(result.rows))
-    .catch((err) => {
-      console.error(err);
-      res.status(404).send(err);
-    });
+    .query(`SELECT * FROM albums WHERE id=${req.params.id}`)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => res.status(404).send(err));
 });
 
-// Delete data by id
-app.delete('/:table/:id', (req, res) => {
-  let id = req.params.table.slice(0, req.params.table.length - 1) + '_id';
+// Song =====
+
+app.get('/songs/name/:term/:count', (req, res) => {
   pool
-    .query(`DELETE FROM ${req.params.table} WHERE ${id}=${req.params.id} RETURNING *`)
-    .then((result) => res.send(result.rows))
-    .catch((err) => {
-      console.error(err);
-      res.status(404).send(err);
-    });
+    .query(`SELECT * FROM songs WHERE name LIKE '%${req.params.term}%' LIMIT ${req.params.count}`)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => res.status(404).send(err));
+});
+
+app.get('/songs/popular/:count', (req, res) => {
+  pool
+    .query(`SELECT * FROM songs ORDER BY listens DESC LIMIT ${req.params.count}`)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => res.status(404).send(err));
+});
+
+app.get('/songs/album/:album/', (req, res) => {
+  pool
+    .query(`SELECT * FROM songs WHERE album='${req.params.album}'`)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => res.status(404).send(err));
+});
+
+app.get('/songs/artist/:artist/', (req, res) => {
+  pool
+    .query(`SELECT * FROM songs WHERE artist='${req.params.artist}'`)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => res.status(404).send(err));
+});
+
+app.get('/songs/genre/:genre/', (req, res) => {
+  pool
+    .query(`SELECT * FROM songs WHERE genre='${req.params.genre}'`)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => res.status(404).send(err));
+});
+
+app.get('/songs/id/:id', (req, res) => {
+  pool
+    .query(`SELECT * FROM songs WHERE id=${req.params.id}`)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => res.status(404).send(err));
+});
+
+// Genre =====
+
+app.get('/genres/name/:term/', (req, res) => {
+  pool
+    .query(`SELECT * FROM genres WHERE name LIKE '%${req.params.term}%'`)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => res.status(404).send(err));
+});
+
+app.get('/genres/id/:id', (req, res) => {
+  pool
+    .query(`SELECT * FROM genres WHERE id=${req.params.id}`)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => res.status(404).send(err));
+});
+
+// Playlist ======
+
+app.get('/playlists/user/:userID/', (req, res) => {
+  pool
+    .query(`SELECT * FROM playlists WHERE user_id=${req.params.id}`)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => res.status(404).send(err));
+});
+
+app.get('/playlists/id/:id', (req, res) => {
+  pool
+    .query(`SELECT * FROM playlists WHERE id=${req.params.id}`)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => res.status(404).send(err));
 });
 
 /* ==================== Listener ==================== */
