@@ -1,0 +1,12 @@
+{
+  "name": "k6",
+  "version": "1.0.0",
+  "description": "",
+  "main": "test.js",
+  "scripts": {
+    "test": "docker run --rm -i grafana/k6 run - <test.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
