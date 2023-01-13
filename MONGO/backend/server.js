@@ -49,6 +49,15 @@ app.get('/', (req, res) => {
   res.send('Welcome to Mongo Backend');
 });
 
+app.get('/simple', (req, res) => {
+  Song.find()
+    .limit(50)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => res.status(404).send(err));
+});
+
 // Users =====
 
 app.get('/users/name/:term/:count', (req, res) => {

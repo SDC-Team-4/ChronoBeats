@@ -44,6 +44,15 @@ app.get('/', (req, res) => {
   res.send('Welcome to ChronoBeats Backend (POSTGRES)');
 });
 
+app.get('/simple', (req, res) => {
+  pool
+    .query(`SELECT * FROM songs LIMIT 50`)
+    .then((result) => {
+      res.send(result.rows);
+    })
+    .catch((err) => res.status(404).send(err));
+});
+
 // Users =====
 
 app.get('/users/name/:term/:count', (req, res) => {

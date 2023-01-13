@@ -8,8 +8,7 @@
     "load": "docker run --rm -i grafana/k6 run - <tests/load.js",
     "stress": "docker run --rm -i grafana/k6 run - <tests/stress.js",
     "soak": "docker run --rm -i grafana/k6 run - <tests/soak.js",
-    "test": "docker run --rm -i grafana/k6 run - <tests/test.js",
-    "end": "docker run --rm -i grafana/k6 run - <tests/endurance.js"
+    "test": "docker run --rm -i grafana/k6 run - <tests/test.js"
   },
   "keywords": [],
   "author": "",
