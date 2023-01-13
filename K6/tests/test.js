@@ -1,7 +1,10 @@
-import { sleep } from 'k6';
 import http from 'k6/http';
 
-export default function () {
-  http.get('http://host.docker.internal:8000/');
-  sleep(1);
-}
+export default () => {
+  http.batch([
+    ['GET', `${base}/users/name/Judy/3`],
+    ['GET', `${base}/songs/name/Christmas/5`],
+    ['GET', `${base}/genres/name/Country/2`],
+    ['GET', `${base}/songs/popular/10`],
+  ]);
+};

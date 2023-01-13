@@ -1,3 +1,26 @@
+import http from 'k6/http';
+
+export let options = {
+  insecureSkipTLSVerify: true,
+  noConnectionResuse: false,
+  stages: [
+    { duration: '10s', target: 100 }, // ramp up to 400 users
+    { duration: '10m', target: 100 }, // stay at 400 for 4 hours
+    { duration: '10s', target: 0 }, // scale down. (optional)
+  ],
+};
+
+const base = 'http://host.docker.internal:8000';
+
+export default () => {
+  http.batch([
+    ['GET', `${base}/users/name/Judy/3`],
+    ['GET', `${base}/songs/name/Christmas/5`],
+    ['GET', `${base}/genres/name/Country/2`],
+    ['GET', `${base}/songs/popular/10`],
+  ]);
+};
+
 /*
 Soak testing is used to validate reliability of the system over in a long time
 
@@ -17,24 +40,3 @@ How to run a soak test:
 - Run the test in 3 stages. ramp up the VUs,  stay there for 4–12 hours, rump down to 0 
 
 */
-
-export let options = {
-  insecureSkipTLSVerify: true,
-  noConnectionResuse: false,
-  stages: [
-    { duration: '10s', target: 100 }, // ramp up to 400 users
-    { duration: '1m', target: 100 }, // stay at 400 for 4 hours
-    { duration: '10s', target: 1400 }, // scale down. (optional)
-  ],
-};
-
-const base = 'http://host.docker.internal:8000/';
-
-export default () => {
-  http.batch([
-    ['GET', `${base}/`],
-    ['GET', `${base}/songs/name/christmas/5`],
-    ['GET', `${base}/genres/name/country/2`],
-    ['GET', `${base}/songs/popular/10`],
-  ]);
-};

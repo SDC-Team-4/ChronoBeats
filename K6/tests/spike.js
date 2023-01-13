@@ -7,20 +7,20 @@ export let options = {
     { duration: '10s', target: 100 }, // below normal load
     { duration: '1m', target: 100 },
     { duration: '10s', target: 1400 }, // spike to 1400 users
-    { duration: '3m', target: 1400 }, // stay at 1400 for 3 minutes
+    { duration: '1m', target: 1400 }, // stay at 1400 for 3 minutes
     { duration: '10s', target: 100 }, // scale down. Recovery stage
-    { duration: '3m', target: 100 },
+    { duration: '1m', target: 100 },
     { duration: '10s', target: 0 },
   ],
 };
 
-const base = 'http://host.docker.internal:8000/';
+const base = 'http://host.docker.internal:8000';
 
 export default () => {
   http.batch([
-    ['GET', `${base}/`],
-    ['GET', `${base}/songs/name/christmas/5`],
-    ['GET', `${base}/genres/name/country/2`],
+    ['GET', `${base}/users/name/Judy/3`],
+    ['GET', `${base}/songs/name/Christmas/5`],
+    ['GET', `${base}/genres/name/Country/2`],
     ['GET', `${base}/songs/popular/10`],
   ]);
 };
