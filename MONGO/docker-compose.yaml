@@ -24,6 +24,8 @@ services:
     depends_on:
       - mongo
 
+  # Not needed for testing
+
   # mongofrontend:
   #   build: ./frontend
   #   container_name: 'mongofrontend'
